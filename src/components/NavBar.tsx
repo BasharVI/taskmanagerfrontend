@@ -5,16 +5,16 @@ import styles from "../styles/NavBar.module.css";
 
 const NavBar = () => {
     const router = useRouter();
-    const [user,setuser]=useState()
+    const [token,setToken]=useState<string>("")
     useEffect(()=>{
-        const user = JSON.parse(localStorage.getItem("user") || "null");
-        
-        setuser(user)
+       const token =localStorage.getItem('token')
+        if (token){
+            setToken(token)
+        }
 
     },[])
 
     const handleLogout = () => {
-        localStorage.removeItem("user");
         localStorage.removeItem("token");
         router.push("/login");
     };
@@ -24,17 +24,17 @@ const NavBar = () => {
             <h1 >Task Manager</h1>
             <nav>
                 <ul className={styles.navbarLinks}>
-                    {!user && <li >
+                    {!token && <li >
                         <Link href="/register">
                             Register
                         </Link>
                     </li>}
-                    {!user && <li >
+                    {!token && <li >
                         <Link href="/login">
                             Login
                         </Link>
                     </li>}
-                    {user && (<li>
+                    {token && (<li>
                         <button onClick={handleLogout} className={styles.logoutButton}>
                             Logout
                         </button>

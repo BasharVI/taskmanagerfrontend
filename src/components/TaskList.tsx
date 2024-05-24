@@ -15,63 +15,60 @@ export default function TaskList() {
   const [title, settitle] = useState<string>("");
   const router = useRouter();
 
- 
-
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-    const userId = user._doc._id;
     const token = localStorage.getItem("token");
     const fetchTasks = async () => {
-      await api.get(`/tasks/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      }).then((response)=>{
-        setTasks(response.data)
-      })
+      await api
+        .get(`/tasks`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          setTasks(response.data);
+        });
     };
-    fetchTasks()
+    fetchTasks();
   }, []);
 
   const handleCreateTask = async () => {
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-  const userId = user._doc._id;
-  const token = localStorage.getItem("token");
-    await api.post(
-      "/tasks",
-      { title: title, userId },
-      { headers: { Authorization: `Bearer ${token}` } }
-    ).then((response)=>{
-      settitle('')
-      const fetchTasks = async () => {
-        await api.get(`/tasks/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }).then((response)=>{
-          setTasks(response.data)
-        })
-      };
-      fetchTasks()    })
+    const token = localStorage.getItem("token");
+    await api
+      .post(
+        "/tasks",
+        { title: title },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then((response) => {
+        settitle("");
+        const fetchTasks = async () => {
+          await api
+            .get(`/tasks`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((response) => {
+              setTasks(response.data);
+            });
+        };
+        fetchTasks();
+      });
     router.push("/");
   };
 
   const handleMarkAsDone = async (id: string) => {
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-  const userId = user._doc._id;
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     await api
-      .post(
-        `/tasks/toggle/${id}`,
-        { userId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
+      .post(`/tasks/toggle/${id}`, { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => {
         alert("Task marked as completed");
         const fetchTasks = async () => {
-          await api.get(`/tasks/${userId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }).then((response)=>{
-            setTasks(response.data)
-          })
+          await api
+            .get(`/tasks`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((response) => {
+              setTasks(response.data);
+            });
         };
-        fetchTasks()
+        fetchTasks();
       })
       .catch((error) => {
         console.log(error);
@@ -81,9 +78,7 @@ export default function TaskList() {
   };
 
   const handleDeleteTask = async (id: string) => {
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-  const userId = user._doc._id;
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     await api
       .delete(`/tasks/${id}`, { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => {
@@ -91,13 +86,15 @@ export default function TaskList() {
           alert("Task deleted successfully");
         }
         const fetchTasks = async () => {
-          await api.get(`/tasks/${userId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }).then((response)=>{
-            setTasks(response.data)
-          })
+          await api
+            .get(`/tasks`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((response) => {
+              setTasks(response.data);
+            });
         };
-        fetchTasks()
+        fetchTasks();
       });
     router.push("/");
   };

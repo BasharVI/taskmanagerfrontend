@@ -13,9 +13,7 @@ export default function login() {
     e.preventDefault();
     await api.post("/auth/login", { username, password })
     .then((response ) => {
-      console.log(response);
       if (response) {
-        localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("token", response.data.access_token);
       }
     })
