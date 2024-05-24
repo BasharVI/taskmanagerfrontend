@@ -40,7 +40,7 @@ export default function TaskList() {
       { title: title, userId },
       { headers: { Authorization: `Bearer ${token}` } }
     ).then((response)=>{
-      console.log(response)
+      settitle('')
       const fetchTasks = async () => {
         await api.get(`/tasks/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
