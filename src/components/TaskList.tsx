@@ -41,8 +41,14 @@ export default function TaskList() {
       { headers: { Authorization: `Bearer ${token}` } }
     ).then((response)=>{
       console.log(response)
-      setTasks(prev=> [prev,response.data])
-    })
+      const fetchTasks = async () => {
+        await api.get(`/tasks/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }).then((response)=>{
+          setTasks(response.data)
+        })
+      };
+      fetchTasks()    })
     router.push("/");
   };
 
@@ -58,6 +64,14 @@ export default function TaskList() {
       )
       .then((response) => {
         alert("Task marked as completed");
+        const fetchTasks = async () => {
+          await api.get(`/tasks/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }).then((response)=>{
+            setTasks(response.data)
+          })
+        };
+        fetchTasks()
       })
       .catch((error) => {
         console.log(error);
@@ -76,6 +90,14 @@ export default function TaskList() {
         if (response.data.deletedCount > 0) {
           alert("Task deleted successfully");
         }
+        const fetchTasks = async () => {
+          await api.get(`/tasks/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }).then((response)=>{
+            setTasks(response.data)
+          })
+        };
+        fetchTasks()
       });
     router.push("/");
   };
