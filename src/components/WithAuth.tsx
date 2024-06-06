@@ -10,14 +10,14 @@ const WithAuth = (WrappedComponent: any) => {
       typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
     useEffect(() => {
-      if (!user || !token) {
+      if (!token) {
         Router.push("/login");
       } else {
         Router.push("/");
       }
-    }, [Router, user, token]);
+    }, [Router, token]);
 
-    return user && token ? <WrappedComponent {...props} /> : null;
+    return token ? <WrappedComponent {...props} /> : null;
   };
 
   AuthComponent.displayName = `WithAuth(${
