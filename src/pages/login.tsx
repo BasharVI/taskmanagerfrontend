@@ -4,23 +4,24 @@ import api from "../services/api";
 import NavBar from "../components/NavBar";
 import styles from "../styles/Login.module.css";
 
-export default function login() {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await api.post("/auth/login", { username, password })
-    .then((response ) => {
-      if (response) {
-        localStorage.setItem("token", response.data.access_token);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("Invalid credentials");
-    })
+    await api
+      .post("/auth/login", { username, password })
+      .then((response) => {
+        if (response) {
+          localStorage.setItem("token", response.data.access_token);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Invalid credentials");
+      });
     router.push("/");
   };
 
@@ -47,4 +48,6 @@ export default function login() {
       </div>
     </>
   );
-}
+};
+
+export default Login;
