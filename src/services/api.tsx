@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
+const baseURL = "https://taskmanagerapi-g34h.onrender.com";
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001'
+  baseURL: baseURL,
 });
 
 export default api;
